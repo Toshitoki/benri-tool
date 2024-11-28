@@ -1,1 +1,3 @@
 # benri-tool
+検索したいものをいれることで
+AucfreeとGoogleで検索できます

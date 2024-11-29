@@ -17,14 +17,16 @@ def main(page: ft.Page):
 
     year = time.localtime().tm_year
     month = time.localtime().tm_mon
+    date = time.localtime().tm_mday
+    last_year = year - 1
 
     def search_test(query):
         #jsonで去年を指定できるようにする
-        last_year = year - 1
+        
 
         #jsonのURLの個数分繰り返す
         for v in json_load.values():
-            url = v['url'].format(query=query, year=year, month=month,last_year=last_year)
+            url = v['url'].format(query=query, year=year, month=month, last_year=last_year, date=date)
             webbrowser.open(url)
 
     page.add(tb1)

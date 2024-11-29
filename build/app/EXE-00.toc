@@ -76,7 +76,7 @@
  [],
  False,
  False,
- 1732779532,
+ 1732885652,
  [('run.exe',
    'c:\\Users\\Okayu\\Documents\\github-projects\\benri-tool\\benri-tool\\.venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\run.exe',
    'EXECUTABLE')],

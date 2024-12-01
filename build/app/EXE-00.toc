@@ -142,7 +142,7 @@
  [],
  False,
  False,
- 1733027678,
+ 1733027967,
  [('run.exe',
    'C:\\Users\\Okayu\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\run.exe',
    'EXECUTABLE')],

@@ -29,10 +29,11 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    version='C:\\Users\\Okayu\\AppData\\Local\\Temp\\6c7e80a3-f21f-4e7b-b052-d711b88a0087',
 )

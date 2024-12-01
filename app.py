@@ -5,7 +5,7 @@ import json
 import os
 
 # jsonファイルのパス
-json_file_path = 'SearchPages.json'
+json_file_path = './SearchPages.json'
 
 # jsonファイルを読み込む
 if os.path.exists(json_file_path):

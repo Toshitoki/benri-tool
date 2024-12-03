@@ -1,18 +1,19 @@
-import flet as ft
+import tkinter as tk
+from tkinter import messagebox
 import webbrowser
 import time
 import json
 
 # jsonファイルを読み込む
 try:
-    json_open = open('./SearchPages.json', 'r')
-    json_load = json.load(json_open)
-    print("jsonファイルを読み込みました")
+    with open('./SearchPages.json', 'r') as json_open:
+        json_load = json.load(json_open)
+        print("jsonファイルを読み込みました")
 except FileNotFoundError:
     # ファイルが存在しない場合、新しいファイルを作成
     default_data = {
         "link1": {
-        "url": "https://www.google.com/search?q={query}"
+            "url": "https://www.google.com/search?q={query}"
         },
         "link2": {
             "url": "https://www.aucfree.com/search?from={last_year}-{month}&q={query}&to={year}-{month}"
@@ -26,31 +27,35 @@ except FileNotFoundError:
     json_load = default_data
     print("jsonファイルを作成しました")
 
-finally:
-    def main(page: ft.Page):
-        page.title = "EZ Searcher"
-        page.vertical_alignment = ft.MainAxisAlignment.CENTER
-        
-        tb1 = ft.TextField(label="Enter product name/Model")
-        search_button = ft.ElevatedButton(text="Search", on_click=lambda e: search_test(tb1.value))
-        result_container = ft.Column()
+def search_test(query):
+    result_container.delete(0, tk.END)
+    year = time.localtime().tm_year
+    month = time.localtime().tm_mon
+    last_year = year - 1
 
-        year = time.localtime().tm_year
-        month = time.localtime().tm_mon
-        date = time.localtime().tm_mday
-        last_year = year - 1
+    # jsonのURLの個数分繰り返す
+    for v in json_load.values():
+        url = v["url"].format(query=query, year=year, month=month, last_year=last_year)
+        result_container.insert(tk.END, url)
+        webbrowser.open(url)
 
-        def search_test(query):
-            result_container.controls.clear()
-            # jsonのURLの個数分繰り返す
-            for v in json_load.values():
-                url = v['url'].format(query=query, year=year, month=month, last_year=last_year, date=date)
-                link = ft.TextButton(text=url, on_click=lambda e, url=url: webbrowser.open(url))
-                result_container.controls.append(link)
-            page.update()
+# メインウィンドウの設定
+root = tk.Tk()
+root.title("EZ Searcher")
 
-        page.add(tb1)
-        page.add(search_button)
-        page.add(result_container)
+# 入力フィールド
+label = tk.Label(root, text="Enter product name/Model")
+label.pack()
+tb1 = tk.Entry(root)
+tb1.pack()
 
-    ft.app(main)
+# 検索ボタン
+search_button = tk.Button(root, text="Search", command=lambda: search_test(tb1.get()))
+search_button.pack()
+
+# 結果表示用リストボックス
+result_container = tk.Listbox(root)
+result_container.pack()
+
+# メインループの開始
+root.mainloop()

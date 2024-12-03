@@ -1,3 +1,5 @@
+#検索するためのURLを管理するソフト
+
 import tkinter as tk
 from tkinter import messagebox
 import sqlite3
@@ -5,7 +7,7 @@ import pyperclip
 import webbrowser
 
 # データベースの設定
-conn = sqlite3.connect('URLs.db')
+conn = sqlite3.connect('./URLs.db')
 c = conn.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS urls
              (id INTEGER PRIMARY KEY, name TEXT, url TEXT)''')
@@ -28,12 +30,15 @@ def add_url():
 def delete_url():
     selected_item = url_listbox.curselection()
     if selected_item:
-        url_id = url_listbox.get(selected_item).split()[0]
-        c.execute("DELETE FROM urls WHERE id=?", (url_id,))
-        conn.commit()
-        load_urls()
+        confirm = messagebox.askyesno("確認", "本当に削除しますか？")
+        if confirm:
+            url_id = url_listbox.get(selected_item).split()[0]
+            c.execute("DELETE FROM urls WHERE id=?", (url_id,))
+            conn.commit()
+            load_urls()
     else:
         messagebox.showwarning("選択エラー", "削除するURLを選択してください")
+
 
 # URLを読み込む関数
 def load_urls():
@@ -56,30 +61,26 @@ def search_test(query):
 # メインウィンドウの設定
 root = tk.Tk()
 root.title("URL Manager")
+root.geometry("600x380")
 
 # URL追加用の入力フィールド
-tk.Label(root, text="Name").pack()
+tk.Label(root, text="ページ名").pack(fill=tk.X, padx=10, pady=5)
 name_entry = tk.Entry(root)
-name_entry.pack()
-tk.Label(root, text="URL").pack()
+name_entry.pack(fill=tk.X, padx=10, pady=5)
+tk.Label(root, text="URL").pack(fill=tk.X, padx=10, pady=5)
 url_entry = tk.Entry(root)
-url_entry.pack()
-tk.Button(root, text="Add URL", command=add_url).pack()
+url_entry.pack(fill=tk.X, padx=10, pady=5)
+tk.Button(root, text="URLを追加", command=add_url).pack(fill=tk.X, padx=10, pady=5)
 
 # URLリスト表示用のリストボックス
 url_listbox = tk.Listbox(root)
-url_listbox.pack()
-tk.Button(root, text="Delete URL", command=delete_url).pack()
-
-# 検索用の入力フィールド
-#tk.Label(root, text="Enter product name/Model").pack()
-#tb1 = tk.Entry(root)
-#tb1.pack()
-#tk.Button(root, text="Search", command=lambda: search_test(tb1.get())).pack()
+url_listbox.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+tk.Button(root, text="URLを削除", command=delete_url).pack(fill=tk.X, padx=10, pady=5)
 
 # 結果表示用フレーム
 result_frame = tk.Frame(root)
-result_frame.pack()
+result_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
 
 # URLを読み込む
 load_urls()

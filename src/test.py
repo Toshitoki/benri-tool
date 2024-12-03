@@ -1,12 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox
 import time
-import pyperclip
 import webbrowser
 import sqlite3
+import pyperclip
 
 # データベースの設定
-conn = sqlite3.connect('URLs.db')
+conn = sqlite3.connect('./URLs.db')
 c = conn.cursor()
 
 # デフォルトのURLデータをデータベースから読み込む関数

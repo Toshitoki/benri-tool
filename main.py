@@ -1,32 +1,21 @@
 import tkinter as tk
 from tkinter import messagebox
 import time
-import json
 import pyperclip
+import webbrowser
 
-# jsonファイルを読み込む
-try:
-    with open('./SearchPages.json', 'r') as json_open:
-        json_load = json.load(json_open)
-        print("jsonファイルを読み込みました")
-except FileNotFoundError:
-    # ファイルが存在しない場合、新しいファイルを作成
-    default_data = {
-        "link1": {
-            "url": "https://www.google.com/search?q={query}"
-        },
-        "link2": {
-            "url": "https://www.aucfree.com/search?from={last_year}-{month}&q={query}&to={year}-{month}"
-        },
-        "link3": {
-            "url": "https://jp.mercari.com/search?keyword={query}"
-        }
+# デフォルトのURLデータ
+default_data = {
+    "link1": {
+        "url": "https://www.google.com/search?q={query}"
+    },
+    "link2": {
+        "url": "https://www.aucfree.com/search?from={last_year}-{month}&q={query}&to={year}-{month}"
+    },
+    "link3": {
+        "url": "https://jp.mercari.com/search?keyword={query}"
     }
-    # 新しいjsonファイルを作成し、デフォルトデータを書き込む
-    with open('SearchPages.json', 'w') as json_file:
-        json.dump(default_data, json_file, indent=4)
-    json_load = default_data
-    print("jsonファイルを作成しました")
+}
 
 def search_test(query):
     # 結果フレーム内の既存のウィジェットを全て削除
@@ -38,8 +27,8 @@ def search_test(query):
     month = time.localtime().tm_mon
     last_year = year - 1
 
-    # jsonのURLの個数分繰り返す
-    for v in json_load.values():
+    # デフォルトのURLデータの個数分繰り返す
+    for v in default_data.values():
         # URLをフォーマットして生成
         url = v["url"].format(query=query, year=year, month=month, last_year=last_year)
         # URLを表示するラベルを作成
@@ -49,10 +38,13 @@ def search_test(query):
         # URLをコピーするボタンを作成
         copy_button = tk.Button(result_frame, text="Copy", command=lambda url=url: pyperclip.copy(url))
         copy_button.pack()
+        
+        # ブラウザでURLを開く
+        webbrowser.open(url)
 
 # メインウィンドウの設定
 root = tk.Tk()
-root.title("EZ Searcher")
+root.title("So-ba Searcher")
 
 # 入力フィールド
 label = tk.Label(root, text="Enter product name/Model")

@@ -3,19 +3,20 @@ from tkinter import messagebox
 import time
 import pyperclip
 import webbrowser
+import sqlite3
 
-# デフォルトのURLデータ
-default_data = {
-    "link1": {
-        "url": "https://www.google.com/search?q={query}"
-    },
-    "link2": {
-        "url": "https://www.aucfree.com/search?from={last_year}-{month}&q={query}&to={year}-{month}"
-    },
-    "link3": {
-        "url": "https://jp.mercari.com/search?keyword={query}"
-    }
-}
+# データベースの設定
+conn = sqlite3.connect('URLs.db')
+c = conn.cursor()
+
+# デフォルトのURLデータをデータベースから読み込む関数
+def load_default_data():
+    data = {}
+    for row in c.execute("SELECT name, url FROM urls"):
+        data[row[0]] = {"url": row[1]}
+    return data
+
+default_data = load_default_data()
 
 def search_test(query):
     # 結果フレーム内の既存のウィジェットを全て削除
@@ -62,3 +63,6 @@ result_frame.pack()
 
 # メインループの開始
 root.mainloop()
+
+# データベース接続を閉じる
+conn.close()

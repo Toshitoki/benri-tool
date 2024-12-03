@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
-import webbrowser
 import time
 import json
+import pyperclip
 
 # jsonファイルを読み込む
 try:
@@ -28,7 +28,9 @@ except FileNotFoundError:
     print("jsonファイルを作成しました")
 
 def search_test(query):
-    result_container.delete(0, tk.END)
+    for widget in result_frame.winfo_children():
+        widget.destroy()
+    
     year = time.localtime().tm_year
     month = time.localtime().tm_mon
     last_year = year - 1
@@ -36,8 +38,11 @@ def search_test(query):
     # jsonのURLの個数分繰り返す
     for v in json_load.values():
         url = v["url"].format(query=query, year=year, month=month, last_year=last_year)
-        result_container.insert(tk.END, url)
-        webbrowser.open(url)
+        link_label = tk.Label(result_frame, text=url, fg="blue", cursor="hand2")
+        link_label.pack()
+        
+        copy_button = tk.Button(result_frame, text="Copy", command=lambda url=url: pyperclip.copy(url))
+        copy_button.pack()
 
 # メインウィンドウの設定
 root = tk.Tk()
@@ -53,9 +58,9 @@ tb1.pack()
 search_button = tk.Button(root, text="Search", command=lambda: search_test(tb1.get()))
 search_button.pack()
 
-# 結果表示用リストボックス
-result_container = tk.Listbox(root)
-result_container.pack()
+# 結果表示用フレーム
+result_frame = tk.Frame(root)
+result_frame.pack()
 
 # メインループの開始
 root.mainloop()

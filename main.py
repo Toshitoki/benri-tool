@@ -22,27 +22,33 @@ except FileNotFoundError:
             "url": "https://jp.mercari.com/search?keyword={query}"
         }
     }
+    # 新しいjsonファイルを作成し、デフォルトデータを書き込む
     with open('SearchPages.json', 'w') as json_file:
         json.dump(default_data, json_file, indent=4)
     json_load = default_data
     print("jsonファイルを作成しました")
 
 def search_test(query):
+    # 結果フレーム内の既存のウィジェットを全て削除
     for widget in result_frame.winfo_children():
         widget.destroy()
     
+    # 現在の年、月、前年を取得
     year = time.localtime().tm_year
     month = time.localtime().tm_mon
     last_year = year - 1
 
     # jsonのURLの個数分繰り返す
     for v in json_load.values():
+        # URLをフォーマットして生成
         url = v["url"].format(query=query, year=year, month=month, last_year=last_year)
+        # URLを表示するラベルを作成
         link_label = tk.Label(result_frame, text=url, fg="blue", cursor="hand2")
         link_label.pack()
         
-        copy_button = tk.Button(result_frame, text="Copy", command=lambda url=url: pyperclip.copy(url))
-        copy_button.pack()
+        # URLをコピーするボタンを作成
+        #copy_button = tk.Button(result_frame, text="Copy", command=lambda url=url: pyperclip.copy(url))
+        #copy_button.pack()
 
 # メインウィンドウの設定
 root = tk.Tk()

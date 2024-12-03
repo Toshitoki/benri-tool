@@ -47,8 +47,8 @@ def search_test(query):
         link_label.pack()
         
         # URLをコピーするボタンを作成
-        #copy_button = tk.Button(result_frame, text="Copy", command=lambda url=url: pyperclip.copy(url))
-        #copy_button.pack()
+        copy_button = tk.Button(result_frame, text="Copy", command=lambda url=url: pyperclip.copy(url))
+        copy_button.pack()
 
 # メインウィンドウの設定
 root = tk.Tk()

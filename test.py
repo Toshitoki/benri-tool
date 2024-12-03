@@ -44,7 +44,7 @@ def search_test(query):
 
 # メインウィンドウの設定
 root = tk.Tk()
-root.title("EZ Searcher")
+root.title("So-ba Searcher")
 
 # 入力フィールド
 label = tk.Label(root, text="Enter product name/Model")

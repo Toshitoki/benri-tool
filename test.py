@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import time
 import pyperclip
+import webbrowser
 
 # デフォルトのURLデータ
 default_data = {
@@ -37,6 +38,9 @@ def search_test(query):
         # URLをコピーするボタンを作成
         copy_button = tk.Button(result_frame, text="Copy", command=lambda url=url: pyperclip.copy(url))
         copy_button.pack()
+        
+        # ブラウザでURLを開く
+        webbrowser.open(url)
 
 # メインウィンドウの設定
 root = tk.Tk()
